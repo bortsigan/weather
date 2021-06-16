@@ -38,6 +38,15 @@ Go to your browser and you can access the app in (http://localhost)
 
 If you're using windows : you need to allow Hyper V and BIOS Virtualization (enabled)
 
+### PostScript
+        /**
+         * Guidelines about the search for City's temperature
+         * 1. It will not display result if one of the two API references could not find the place or has error
+         * 2. It will only cache once it is saved
+         * 3. Last saved in cache will only display for a limited time
+         * 4. When reset is clicked, cache will be removed and search will be empty
+         **/
+
 ### License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
