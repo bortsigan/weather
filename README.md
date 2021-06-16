@@ -26,7 +26,12 @@
 ## 8. php artisan key:generate
 ## 9. php artisan config:cache
  ### if it does not work try : php artisan config:cache && php artisan config:clear && php artisan cache:clear
+## 10. php artisan db:wipe
+## 11. php artisan migrate
 
+### AFTER THE INSTALLATION
+
+Go to your browser and you can access the app in (http://localhost)
 
 
 ### NOTE :
