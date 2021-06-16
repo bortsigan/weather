@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./infra/app/Dockerfile.local
+      args:
+        - APP_ENV=local
+    volumes:
+      - ./:/var/www
+      - ./infra/app/php.ini:/usr/local/etc/php/php.ini
+  web:
+    build:
+      context: .
+      dockerfile: ./infra/web/Dockerfile.local
+      args:
+        - APP_HOST=app
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www
+    links:
+      - app
+  mysql:
+    build: ./infra/mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./infra/mysql/mysql-data:/var/lib/mysql
+      - ./infra/mysql/sqls:/docker-entrypoint-initdb.d
+      - ./infra/mysql/localtime:/etc/localtime:ro
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
