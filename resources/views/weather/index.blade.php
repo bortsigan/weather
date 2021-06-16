@@ -86,11 +86,12 @@
                 <input type="hidden" name="cloud" value="{{ $temperatureResult['cloud'] }}" />
                 <input type="hidden" name="img" value="{{ $temperatureResult['img'] }}" />
             </form>
+            @if (!isset($temperatureResult['is_cache']))
             <button type="button" class="btn btn-sm btn-primary" id="save">
                 <span id="btntxt">Save Forecast</span>
                 <span id="btnloader" class="d-none"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>
             </button>
-            
+            @endif
         </div>
     @endif
 </div>

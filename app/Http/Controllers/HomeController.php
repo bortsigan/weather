@@ -58,6 +58,7 @@ class HomeController
             $city   = $cache['city'];
             $result = $cache;
             $result['error'] = false;
+            $result['is_cache'] = true;
         }
 
         return view('weather.index')
