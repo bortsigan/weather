@@ -13,18 +13,18 @@
 
 ## 1. clone the repo (git clone https://github.com/bortsigan/weather.git)
 ## 2. Go to the folder (cd weather)
-## 3. type in the terminal (docker-compose up -d --build)
-	3.1 (docker ps) to check the app, web and mysql containers running
-## 4. type in the terminal (npm install && npm run prod)
-## 5. type in the terminal (cp .env.example .env)
+## 3. docker-compose up -d --build
+	3.1 To check the app, web and mysql containers running use command (docker ps)
+## 4. npm install && npm run prod
+## 5. cp .env.example .env
 
 ## 6.
 	6.1 for windows : winpty docker-compose exec app sh
 	6.2 for mac : docker-compose exec app /bin/bash
 
-## 7. type in the terminal (composer install)
-## 8. type in the terminal (php artisan key:generate)
-## 9. type in the terminal (php artisan config:cache)
+## 7. composer install
+## 8. php artisan key:generate
+## 9. php artisan config:cache
  ### if it does not work try : php artisan config:cache && php artisan config:clear && php artisan cache:clear
 
 
