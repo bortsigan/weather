@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\WeatherTemperatureService;
+use App\Services\StoreWeatherTemperature;
+use App\Services\DisplayResultService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 
@@ -14,18 +14,25 @@ use Illuminate\Http\JsonResponse;
 class HomeController
 {
     /**
-     * @var WeatherTemperatureService $weatherTemperatureService
+     * @var StoreWeatherTemperature $storeWeatherTemperature
      */
-    protected $weatherTemperatureService;
+    protected $storeWeatherTemperature;
+
+    /**
+     * @var DisplayResultService $displayResultService
+     */
+    protected $displayResultService;
 
     /**
      * HomeController constructor.
      * 
-     * @param WeatherTemperatureService $weatherTemperatureService
+     * @param StoreWeatherTemperature $storeWeatherTemperature
+     * @param DisplayResultService $displayResultService
      **/
-    public function __construct(WeatherTemperatureService $weatherTemperatureService)
+    public function __construct(StoreWeatherTemperature $storeWeatherTemperature, DisplayResultService $displayResultService)
     {
-        $this->weatherTemperatureService = $weatherTemperatureService;
+        $this->storeWeatherTemperature = $storeWeatherTemperature;
+        $this->displayResultService = $displayResultService;
     }
 
     /**
@@ -41,29 +48,15 @@ class HomeController
          * 4. When reset is clicked, cache will be removed and search will be empty
          **/
         
-        $city   = null;
-        $reset  = $request->query('reset') ?? null;
-        $cache  = Cache::get('lastTemperatureRead');
+        $result = [];
+        $query  = $request->input('query') ?? null;
+        $reset  = $request->query('reset') ? true : false;
 
-        if ($reset) { 
-            Cache::forget('lastTemperatureRead');
-            $cache  = null;
-            $result = [];
-        }
-
-        $city = $request->input('city') ? $request->input('city') : ($cache ? $cache['city'] : null);
-        $result = $this->weatherTemperatureService->getTemperatureByQuery($city);
-
-        if (Cache::has('lastTemperatureRead') && !$reset && !$request->input('city')) {
-            $city   = $cache['city'];
-            $result = $cache;
-            $result['error'] = false;
-            $result['is_cache'] = true;
-        }
-
+        $display = $this->displayResultService->getDisplayResult($query, $reset);
+        
         return view('weather.index')
-                    ->withTemperatureResult($result)
-                    ->withRequestCity($request->input('city') ?? null);
+                    ->withTemperatureResult($display)
+                    ->withQuery($query);
     }
 
     /**
@@ -73,7 +66,7 @@ class HomeController
     {
         $data = $request->all();
 
-        $store = $this->weatherTemperatureService->store($data);
+        $store = $this->storeWeatherTemperature->store($data);
 
         return response()->json($store);
     }

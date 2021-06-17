@@ -10,7 +10,7 @@
         <form method="get" action="{{ route('index') }}">
             <div class="row">
                 <div class="col-md-2">
-                    <label class="sr-only" for="city">Enter City / Country</label>
+                    <label class="sr-only" for="query">Enter City / Country</label>
                 </div>
                 <div class="col-md-8">
                     <div class="input-group mb-2 mr-sm-2">
@@ -18,12 +18,12 @@
                             <div class="input-group-text">Enter City / Country</div>
                         </div>
 
-                        <input type="text" name="city" class="form-control" id="city" placeholder="Type your city or country here.." value="{{ $requestCity }}" />
+                        <input type="text" name="query" class="form-control" id="query" placeholder="Type your city or country here.." value="{{ $query }}" />
                     </div>
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
-                    <a href="{{ route('index', ['reset' => true, 'city' => null]) }}" class="btn btn-secondary mb-2"><i class="fa fa-undo" aria-hidden="true"></i></a>
+                    <a href="{{ route('index', ['reset' => true]) }}" class="btn btn-secondary mb-2"><i class="fa fa-undo" aria-hidden="true"></i></a>
                 </div>
             </div>
         </form>
@@ -35,7 +35,7 @@
              &nbsp; Current Temperature
         </h4>
 
-        @if (!$temperatureResult['error'])
+        @if (isset($temperatureResult['error']) && !$temperatureResult['error'])
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
@@ -43,7 +43,7 @@
                         <div class="col-sm-12 text-center">
                             <h3>
                                 <img src="{{ $temperatureResult['img'] }}" />
-                                {{ $temperatureResult['current_temp'] }} 
+                                {{ $temperatureResult['temperature_c'] }} 
                                 ({{ $temperatureResult['cloud'] }})
                             </h3>
                         </div>
@@ -58,10 +58,10 @@
                     <div class="row">
                         <div class="col-sm-12 text-center">
                            <h6>
-                                @if (isset($temperatureResult['is_last_saved']))
+                                @if (isset($temperatureResult['is_cache']))
                                     <span class="text-info">(Last Saved)</span>
                                 @endif
-                                {{ $temperatureResult['city']. ", " . $temperatureResult['region'] . ", " . $temperatureResult['country'] }} 
+                                {{ $temperatureResult['city'] ? $temperatureResult['city'] . ',' : '' }} {{ $temperatureResult['region'] . ", " . $temperatureResult['country'] }} 
                             </h6>
                         </div>
                     </div>
@@ -70,19 +70,22 @@
             </div>
         @endif
 
-        @if ($temperatureResult['error'] && $temperatureResult['message'])
+        @if (
+            (isset($temperatureResult['error']) && isset($temperatureResult['message'])) && 
+            ($temperatureResult['error'] && $temperatureResult['message'])
+        )
         <div class="alert alert-danger d-flex justify-content-center">
             {{ $temperatureResult['message'] ?? 'Something went try, try again.' }}
         </div>
         @endif
     </div>
-    @if ($temperatureResult['current_temp'])
+    @if (isset($temperatureResult['temperature_c']) && $temperatureResult['temperature_c'])
         <div class="float-right">
             <form id="form_forecast">
                 <input type="hidden" name="city" value="{{ $temperatureResult['city'] }}" />
                 <input type="hidden" name="region" value="{{ $temperatureResult['region'] }}" />
                 <input type="hidden" name="country" value="{{ $temperatureResult['country'] }}" />
-                <input type="hidden" name="temperature_c" value="{{ $temperatureResult['current_temp'] }}" />
+                <input type="hidden" name="temperature_c" value="{{ $temperatureResult['temperature_c'] }}" />
                 <input type="hidden" name="cloud" value="{{ $temperatureResult['cloud'] }}" />
                 <input type="hidden" name="img" value="{{ $temperatureResult['img'] }}" />
             </form>
@@ -131,7 +134,7 @@
                         $("#btnloader").addClass("d-none");
                         $("#btntxt").removeClass("d-none");
                     }
-                })
+                });
 
             });
         });
