@@ -35,6 +35,7 @@ class StoreWeatherTemperature
      * Store data for temperature reading
      * 
      * @param Array $request
+     * 
      * @return Array $array
      **/
 	public function store(Array $request) : Array 
@@ -50,7 +51,7 @@ class StoreWeatherTemperature
             $request['error']       = self::ERROR_FALSE;
             $request['message']     = null;
 
-            
+
             $response['error']      = self::ERROR_FALSE;
             $response['message']    = "Successfully saved.";
 

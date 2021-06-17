@@ -5,7 +5,8 @@ namespace App\Services;
 /**
  * Class ComputeWeatherTemperatureService.
  */
-class ComputeWeatherTemperatureService {
+class ComputeWeatherTemperatureService 
+{
 	
 	const NUM_OF_DECIMAL = 2;
 	const ZERO_VALUE = 0;

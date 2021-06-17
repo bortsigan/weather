@@ -14,7 +14,6 @@ use App\Services\Interfaces\WeatherApiInterface;
 class WeatherTemperatureService implements WeatherApiInterface
 {
     const NUM_OF_DECIMAL = 2;
-
     const CACHE_MINUTES = 3;
 
     /** @var $weatherApiService **/
@@ -45,6 +44,7 @@ class WeatherTemperatureService implements WeatherApiInterface
      * Get temperature by query
      * 
      * @param String $query
+     * 
      * @return Array $array
      **/ 
     public function getTemperatureByQuery($query = null) : Array

@@ -12,6 +12,7 @@ class WeatherApiService implements WeatherApiInterface {
      * Get Temperature by query
      * 
      * @param String $query
+     * 
      * @return Array $array
      **/ 
     public function getTemperatureByQuery(String $query) : Array
